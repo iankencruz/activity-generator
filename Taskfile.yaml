@@ -1,0 +1,50 @@
+version: "3"
+
+dotenv: [".env", ".env.local"]
+
+vars:
+  BUILD_DIR: ./bin
+  EXE: main{{exeExt}}
+  MIGRATIONS_DIR: ./internal/database/migrations
+
+tasks:
+  default:
+    cmds: 
+      - task --list
+
+  dev:
+    desc: "Run Go (Air) and SvelteKit (Vite) in parallel"
+    cmds:
+      - air & cd frontend && npm run dev
+
+  go:build:
+    desc: "Build Go binary"
+    sources:
+      - "**/*.go"
+      - go.mod
+    generates:
+      - "{{.BUILD_DIR}}/{{.EXE}}"
+    cmds:
+      - go build -o {{.BUILD_DIR}}/{{.EXE}} ./cmd/web/main.go
+
+  go:tidy:
+    cmds: [go mod tidy]
+
+  # Database Migrations
+  db:up:
+    desc: "Apply migrations"
+    cmds:
+      - '{{if .CLI_ARGS}}goose up-to {{.CLI_ARGS}}{{else}}goose up{{end}}'
+
+  db:down:
+    desc: "Rollback migration"
+    cmds:
+      - '{{if .CLI_ARGS}}goose down-to {{.CLI_ARGS}}{{else}}goose down{{end}}'
+
+  db:create:
+    desc: "Create migration: task db:create -- name"
+    cmds:
+      - goose -s -dir {{.MIGRATIONS_DIR}} create {{.CLI_ARGS}} sql
+
+  db:status:
+    cmds: [goose status]
