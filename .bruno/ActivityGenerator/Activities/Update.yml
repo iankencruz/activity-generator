@@ -1,0 +1,25 @@
+info:
+  name: Update
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: 127.0.0.1:8090/api/collections/Activity/records/:id
+  params:
+    - name: id
+      value: flmb0l4ttjfc8i9
+      type: path
+  body:
+    type: multipart-form
+    data:
+      - name: title
+        type: text
+        value: Table Tennis
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
