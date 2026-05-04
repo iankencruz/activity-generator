@@ -7,6 +7,16 @@ export default defineConfig({
   fmt: {},
   lint: { options: { typeAware: true, typeCheck: true } },
   plugins: [tailwindcss(), sveltekit()],
+  server: {
+    // proxy: {
+    //   "/api": {
+    //     target: "http://localhost:8090",
+    //     changeOrigin: true,
+    //     secure: false, // Keep this as a safety measure for local dev
+    //     // rewrite: (path) => path.replace(/^\/api/, ''),
+    //   },
+    // },
+  },
   test: {
     expect: { requireAssertions: true },
     projects: [
