@@ -9,13 +9,13 @@ vars:
 
 tasks:
   default:
-    cmds: 
+    cmds:
       - task --list
 
   dev:
     desc: "Run Go (Air) and SvelteKit (Vite) in parallel"
     cmds:
-      - air & cd frontend && npm run dev
+      - air & cd frontend && vp run dev
 
   go:build:
     desc: "Build Go binary"
@@ -25,7 +25,7 @@ tasks:
     generates:
       - "{{.BUILD_DIR}}/{{.EXE}}"
     cmds:
-      - go build -o {{.BUILD_DIR}}/{{.EXE}} ./cmd/web/main.go
+      - go build -o {{.BUILD_DIR}}/{{.EXE}} main.go
 
   go:tidy:
     cmds: [go mod tidy]
@@ -34,12 +34,12 @@ tasks:
   db:up:
     desc: "Apply migrations"
     cmds:
-      - '{{if .CLI_ARGS}}goose up-to {{.CLI_ARGS}}{{else}}goose up{{end}}'
+      - "{{if .CLI_ARGS}}goose up-to {{.CLI_ARGS}}{{else}}goose up{{end}}"
 
   db:down:
     desc: "Rollback migration"
     cmds:
-      - '{{if .CLI_ARGS}}goose down-to {{.CLI_ARGS}}{{else}}goose down{{end}}'
+      - "{{if .CLI_ARGS}}goose down-to {{.CLI_ARGS}}{{else}}goose down{{end}}"
 
   db:create:
     desc: "Create migration: task db:create -- name"
